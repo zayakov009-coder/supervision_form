@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบฟอร์มการนิเทศห้องเรียนคุณภาพ - โรงเรียนศรีสว่างสามัคคี</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        @page {
+            size: A4;
+            margin: 10mm 12mm;
+        }
+
+        body {
+            margin: 0;
+            padding: 10px;
+            color: #222;
+            background-color: #f4f6f9;
+            font-size: 13pt;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #1e3a8a;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 16pt;
+            margin: 0 0 5px 0;
+            color: #1e3a8a;
+            font-weight: 700;
+        }
+
+        .header h2 {
+            font-size: 14pt;
+            margin: 0;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            font-size: 12pt;
+        }
+
+        .info-item.full {
+            grid-column: span 2;
+        }
+
+        .info-item input {
+            padding: 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 12pt;
+            margin-top: 3px;
+        }
+
+        .section-title {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 6px 10px;
+            font-size: 13pt;
+            font-weight: bold;
+            margin: 15px 0 8px 0;
+            border-radius: 4px;
+        }
+
+        table.eval-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 12pt;
+        }
+
+        table.eval-table th, table.eval-table td {
+            border: 1px solid #94a3b8;
+            padding: 5px 8px;
+            vertical-align: middle;
+        }
+
+        table.eval-table th {
+            background-color: #e2e8f0;
+            color: #0f172a;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .category-row {
+            background-color: #f1f5f9 !important;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        input[type="radio"] {
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        select, textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 12pt;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        /* Photo Upload Section */
+        .photo-section {
+            border: 2px dashed #94a3b8;
+            padding: 12px;
+            text-align: center;
+            border-radius: 6px;
+            background: #f8fafc;
+            margin-bottom: 15px;
+        }
+
+        .photo-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .photo-box {
+            width: 140px;
+            height: 110px;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .photo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-box span {
+            color: #64748b;
+            font-size: 10pt;
+            text-align: center;
+            padding: 5px;
+        }
+
+        /* Signatures */
+        .signature-section {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            page-break-inside: avoid;
+        }
+
+        .signature-box {
+            text-align: center;
+            padding: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+
+        .signature-line {
+            border-bottom: 1px dotted #333;
+            margin: 35px auto 8px auto;
+            width: 80%;
+        }
+
+        /* Print Controls */
+        .no-print {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn-print {
+            background: #2563eb;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14pt;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-print:hover {
+            background: #1d4ed8;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>แบบฟอร์มการนิเทศห้องเรียนคุณภาพ</h1>
+        <h2>โรงเรียนศรีสว่างสามัคคี สำนักงานเขตพื้นที่การศึกษาประถมศึกษา</h2>
+    </div>
+
+    <!-- General Info Form -->
+    <div class="info-grid">
+        <div class="info-item">
+            <label><b>ชื่อ-นามสกุล (ครูผู้รับการนิเทศ):</b></label>
+            <input type="text" placeholder="ระบุชื่อครูประจำชั้น">
+        </div>
+        <div class="info-item">
+            <label><b>ประจำชั้น/ระดับประถม:</b></label>
+            <input type="text" placeholder="เช่น ป.1 - ป.6">
+        </div>
+        <div class="info-item">
+            <label><b>วันที่นิเทศ:</b></label>
+            <input type="text" placeholder="ว/ด/ป">
+        </div>
+        <div class="info-item">
+            <label><b>ชื่อผู้นิเทศ:</b></label>
+            <input type="text" placeholder="ระบุชื่อผู้นิเทศ">
+        </div>
+    </div>
+
+    <!-- SECTION 1: Physical Environment (Checklist มี / ไม่มี) -->
+    <div class="section-title">องค์ประกอบที่ 1 การประเมินด้านกายภาพ (คะแนนเต็ม 20 คะแนน)</div>
+    <table class="eval-table">
+        <thead>
+            <tr>
+                <th style="width: 76%;">รายการประเมิน</th>
+                <th style="width: 12%;">มี</th>
+                <th style="width: 12%;">ไม่มี</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- หมวด 1 -->
+            <tr class="category-row">
+                <td colspan="3">1. ความเป็นระเบียบเรียบร้อยและความสะอาดของห้อง (คะแนนเต็ม 5)</td>
+            </tr>
+            <tr>
+                <td>1. มีพื้นห้องที่สะอาด</td>
+                <td class="text-center"><input type="radio" name="p1" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p1" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>2. การจัดโต๊ะ/เก้าอี้ของนักเรียนมีความเป็นระเบียบเรียบร้อย</td>
+                <td class="text-center"><input type="radio" name="p2" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p2" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>3. การจัดโต๊ะ/เก้าอี้ของครูจัดเป็นระเบียบ สะอาด เหมาะสมกับกายภาพของห้องเรียน</td>
+                <td class="text-center"><input type="radio" name="p3" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p3" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>4. การจัดเก็บวัสดุ สื่อ อุปกรณ์ ของใช้ประจำห้องเรียนจัดเก็บอย่างเป็นระเบียบ สะอาดและสวยงาม เช่นเก็บไว้ในตู้/ชั้นวางของ</td>
+                <td class="text-center"><input type="radio" name="p4" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p4" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>5. บริเวณภายในและบริเวณรอบห้องเรียนมีความสะอาดและปลอดภัย</td>
+                <td class="text-center"><input type="radio" name="p5" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p5" value="ไม่มี"></td>
+            </tr>
+
+            <!-- หมวด 2 -->
+            <tr class="category-row">
+                <td colspan="3">2. บรรยากาศที่เอื้อต่อการเรียนรู้ (คะแนนเต็ม 15)</td>
+            </tr>
+            <tr>
+                <td>1. มีป้ายชื่อชั้นเรียน (ภาษาไทยและภาษาอังกฤษ)</td>
+                <td class="text-center"><input type="radio" name="p6" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p6" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>2. มีป้ายชื่อครูประจำชั้น (ภาษาไทยและภาษาอังกฤษ)</td>
+                <td class="text-center"><input type="radio" name="p7" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p7" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>3. มีป้ายแสดงสถิติการมาเรียนของนักเรียน</td>
+                <td class="text-center"><input type="radio" name="p8" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p8" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>4. มีป้ายสมาชิกเพื่อนร่วมชั้นเรียน</td>
+                <td class="text-center"><input type="radio" name="p9" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p9" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>5. มีสัญลักษณ์ของชาติ ศาสนา และพระมหากษัตริย์จัดวางอย่างถูกต้อง</td>
+                <td class="text-center"><input type="radio" name="p10" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p10" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>6. มีตารางสอน/ตารางเรียนที่เป็นปัจจุบัน</td>
+                <td class="text-center"><input type="radio" name="p11" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p11" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>7. มีป้ายแสดงข้อตกลงของห้องเรียน</td>
+                <td class="text-center"><input type="radio" name="p12" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p12" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>8. มีมุมแสดงผลงานของนักเรียนที่สอดคล้องกับหน่วยการเรียนรู้ที่เป็นปัจจุบัน</td>
+                <td class="text-center"><input type="radio" name="p13" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p13" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>9. มีมุมส่งเสริมการเรียนรู้ / การอ่าน</td>
+                <td class="text-center"><input type="radio" name="p14" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p14" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>10. มีมุมสำหรับวาง/แขวนแก้วน้ำ แปรงสีฟันของนักเรียนทุกคน</td>
+                <td class="text-center"><input type="radio" name="p15" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p15" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>11. มีป้ายนิเทศที่สอดคล้องกับการเรียนการสอนที่เป็นปัจจุบัน</td>
+                <td class="text-center"><input type="radio" name="p16" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p16" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>12. มีสื่อ/อุปกรณ์การเรียนรู้ที่สอดคล้องกับหน่วยหรือแผนการจัดการเรียนรู้ที่เป็นปัจจุบัน</td>
+                <td class="text-center"><input type="radio" name="p17" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p17" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>13. มีสื่อ/อุปกรณ์ เทคโนโลยี ที่พร้อมใช้งาน ตั้งอยู่ในตำแหน่งที่เหมาะสม</td>
+                <td class="text-center"><input type="radio" name="p18" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p18" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>14. วัสดุ อุปกรณ์ เครื่องใช้ไฟฟ้าอยู่ในสภาพดี ปลอดภัยไม่เสี่ยงต่อการเกิดอันตราย</td>
+                <td class="text-center"><input type="radio" name="p19" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p19" value="ไม่มี"></td>
+            </tr>
+            <tr>
+                <td>15. มีแสงสว่างเพียงพอ</td>
+                <td class="text-center"><input type="radio" name="p20" value="มี"></td>
+                <td class="text-center"><input type="radio" name="p20" value="ไม่มี"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- SECTION 2: Teaching Process & Innovation (Observation / Inquiry) -->
+    <div class="section-title">องค์ประกอบที่ 2 กระบวนการจัดการเรียนรู้ เทคนิคการสอน และนวัตกรรมการสอน (สอบถาม/สังเกต)</div>
+    <table class="eval-table">
+        <thead>
+            <tr>
+                <th style="width: 65%;">ประเด็นการประเมิน</th>
+                <th style="width: 35%;">ผลการประเมิน / บันทึกข้อมูล</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>1. การจัดกระบวนการเรียนรู้เน้นผู้เรียนเป็นสำคัญ:</b> เปิดโอกาสให้นักเรียนมีส่วนร่วมปฏิบัติจริง คิด และสร้างองค์ความรู้ด้วยตนเอง</td>
+                <td>
+                    <select>
+                        <option value="">-- เลือกผลการประเมิน --</option>
+                        <option value="ดีเยี่ยม">ดีเยี่ยม</option>
+                        <option value="ดี">ดี</option>
+                        <option value="พอใช้">พอใช้</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><b>2. เทคนิคการสอนที่หลากหลาย:</b> การใช้คำถามกระตุ้น การทำงานกลุ่ม หรือกระบวนการกลุ่มสัมพันธ์ที่เหมาะสมกับวัย</td>
+                <td>
+                    <select>
+                        <option value="">-- เลือกผลการประเมิน --</option>
+                        <option value="ดีเยี่ยม">ดีเยี่ยม</option>
+                        <option value="ดี">ดี</option>
+                        <option value="พอใช้">พอใช้</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><b>3. การใช้นวัตกรรม/สื่อการสอน:</b> การใช้นวัตกรรม สื่อทำมือ หรือสื่อเทคโนโลยีช่วยแก้ปัญหาและพัฒนาผู้เรียน</td>
+                <td>
+                    <select>
+                        <option value="">-- เลือกผลการประเมิน --</option>
+                        <option value="ดีเยี่ยม">ดีเยี่ยม</option>
+                        <option value="ดี">ดี</option>
+                        <option value="พอใช้">พอใช้</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><b>4. การวัดและประเมินผลตามสภาพจริง:</b> ประเมินทั้งด้านความรู้ ทักษะ และคุณลักษณะด้วยวิธีการที่หลากหลาย</td>
+                <td>
+                    <select>
+                        <option value="">-- เลือกผลการประเมิน --</option>
+                        <option value="ดีเยี่ยม">ดีเยี่ยม</option>
+                        <option value="ดี">ดี</option>
+                        <option value="พอใช้">พอใช้</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label><b>บันทึกเพิ่มเติม / ข้อเสนอแนะ:</b></label>
+                    <textarea rows="2" placeholder="ระบุข้อเสนอแนะเพิ่มเติม..."></textarea>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- SECTION 3: Classroom Photos -->
+    <div class="section-title">รูปภาพห้องเรียนคุณภาพ</div>
+    <div class="photo-section">
+        <p style="margin: 0 0 8px 0; font-size: 11pt; color: #475569;">แตะเลือกรูปภาพบรรยากาศห้องเรียน มุมอ่านหนังสือ หรือป้ายนิเทศ</p>
+        <input type="file" id="roomPhotos" accept="image/*" multiple onchange="previewImages(event)">
+        <div class="photo-preview-container" id="photoPreview">
+            <div class="photo-box"><span>ภาพห้องเรียน</span></div>
+            <div class="photo-box"><span>ภาพมุมอ่าน/ป้าย</span></div>
+        </div>
+    </div>
+
+    <!-- SECTION 4: Director Feedback & Signatures -->
+    <div class="section-title">ความคิดเห็น และการลงนาม</div>
+    <div style="margin-bottom: 12px;">
+        <label><b>ความคิดเห็นและข้อเสนอแนะของผู้อำนวยการโรงเรียน:</b></label>
+        <textarea rows="2" placeholder="ระบุความคิดเห็นของผู้อำนวยการโรงเรียน..."></textarea>
+    </div>
+
+    <!-- Signatures Area -->
+    <div class="signature-section">
+        <div class="signature-box">
+            <div class="signature-line"></div>
+            <div>(ลงชื่อ).......................................................</div>
+            <div style="margin-top: 4px;"><b>(.......................................................)</b></div>
+            <div>ครูผู้รับการประเมิน</div>
+        </div>
+        <div class="signature-box">
+            <div class="signature-line"></div>
+            <div>(ลงชื่อ).......................................................</div>
+            <div style="margin-top: 4px;"><b>(.......................................................)</b></div>
+            <div>ผู้อำนวยการโรงเรียนศรีสว่างสามัคคี</div>
+        </div>
+    </div>
+
+    <!-- Print Button -->
+    <div class="no-print">
+        <button class="btn-print" onclick="window.print()">🖨️ พิมพ์แบบฟอร์ม / บันทึกเป็น PDF</button>
+    </div>
+
+</div>
+
+<script>
+    function previewImages(event) {
+        const previewContainer = document.getElementById('photoPreview');
+        previewContainer.innerHTML = '';
+        const files = event.target.files;
+        
+        if (files.length === 0) {
+            previewContainer.innerHTML = '<div class="photo-box"><span>ภาพห้องเรียน</span></div><div class="photo-box"><span>ภาพมุมอ่าน/ป้าย</span></div>';
+            return;
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const box = document.createElement('div');
+                box.className = 'photo-box';
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                box.appendChild(img);
+                previewContainer.appendChild(box);
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+</body>
+</html>
